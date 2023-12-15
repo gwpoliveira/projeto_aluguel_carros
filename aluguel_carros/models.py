@@ -6,7 +6,7 @@ from django.contrib.auth import get_user_model
 class Carro(models.Model):
     placa=models.CharField('Placa:', max_length=8, unique=True)
     modelo = models.CharField('Modelo:', max_length=100)
-    ano =  models.CharField('Modelo:', max_length=10)
+    ano =  models.CharField('Ano:', max_length=10)
     foto = models.ImageField('Foto:',upload_to='carros', blank=True, null=True)  
     disponivel = models.BooleanField(default=True)
     
