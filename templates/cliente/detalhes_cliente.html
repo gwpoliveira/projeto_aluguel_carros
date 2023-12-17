@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% load static bootstrap5 %}
+
+{% block title %}Cliente{% endblock %}
+
+{% block content %}
+    <div class="container-fluid mb-5">
+        <h2 class="text-center text-white bg-success py-5">Cliente</h2>
+    </div>
+
+    <div class="container mb-5 mx-2">
+        
+        <h4 class="container bg-primary-subtle">
+            <p>Nome: {{ cliente.nomeCliente }}</p>
+            <p>Email: {{ cliente.emailCliente }}</p>
+            <p>CPF: {{ cliente.cpfCliente }}</p>
+            <p>Contato: {{ cliente.telefoneCliente }}</p>
+            <p>Endereço: {{ cliente.enderecoCliente }}</p>
+        </h4>
+
+        <a class="btn btn-primary" href="{% url 'editar_cliente' cliente.id %}" role="button">Atualizar</a>
+
+        <!-- Adicione um modal para confirmação da exclusão -->
+        <a class="btn btn-danger" href="{% url 'excluir_cliente' cliente.id %}">Excluir Cliente</a>
+    </div>
+{% endblock %}

@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% load static bootstrap5 %}
+
+{% block title %}Listagem de Carros{% endblock %}
+
+{% block content %}
+{%bootstrap_messages%}
+    <div class="container-fluid mb-5">
+        <h2 class="text-center text-white bg-success py-5">Listagem de Carros</h2>
+    </div>
+
+    <div class="container-fluid mb-5 mx-2">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">Carro</th>
+                    <th scope="col">Placa</th>
+                    <th scope="col">Modelo</th>
+                    <th scope="col">Ano</th>
+                    <th scope="col">Disponibilidade</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for carro in carros %}
+                    <tr>
+                        <td>
+                            {% if carro.foto %}
+                                <a href="{% url 'detalhes_carro' carro.id %}">
+                                    <img src="{{ carro.foto.url }}" alt="{{ carro.modelo }}" width="200">
+                                </a>
+                            {% endif %}
+                        </td>
+                        <td><a href="{% url 'detalhes_carro' carro.id %}">{{ carro.placa }}</a></td>
+                        <td><a href="{% url 'detalhes_carro' carro.id %}">{{ carro.modelo }}</a></td>
+                        <td><a href="{% url 'detalhes_carro' carro.id %}">{{ carro.ano }}</a></td>
+                        <td><a href="{% url 'detalhes_carro' carro.id %}">{% if carro.disponivel %}Sim{% else %}Não{% endif %}</a></td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <div class="container-fluir">
+        {% bootstrap_pagination page_obj %}
+        {% if perms.carro.add_carro %}
+        <a class="btn btn-success mx-2" href="{% url 'adicionar_carro' %}" role="button">Cadastrar carro</a>
+    {% endif %}
+    </div>
+    
+{% endblock %}

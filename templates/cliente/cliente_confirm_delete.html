@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% load static bootstrap5 %}
+
+{% block title %}Excluir Cliente{% endblock %}
+
+    {% block content %}
+    <div class="container-fluir mb-5">
+        <h2 class=" text-center text-white bg-success py-5">Excluir Cliente</h2>
+            <div class="container my-5">
+                <h4>Tem certeza de que deseja excluir o cliente "{{ cliente.nomeCliente }}"?</h4>
+                <form method="post">{% csrf_token %}
+                    <button class="btn btn-danger mt-5" type="submit">Confirmar Exclusão</button>
+                </form>
+
+            </div>
+
+    </div>
+    
+        
+
+   
+{% endblock %}

@@ -14,7 +14,7 @@ class FuncionarioForm(forms.ModelForm):
 class ClienteForm(forms.ModelForm):
     class Meta:
         model = Cliente
-        fields = ['nomeCliente', 'emailCliente', 'cpfCliente', 'telefoneCliente', 'enderecoCliente', 'user']
+        fields = ['nomeCliente', 'emailCliente', 'cpfCliente', 'telefoneCliente', 'enderecoCliente']
 
 class ContratoAluguelForm(forms.ModelForm):
     class Meta:

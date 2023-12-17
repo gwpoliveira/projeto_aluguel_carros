@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% load static bootstrap5 %}
+
+{% block title %}Detalhes do Carro{% endblock %}
+
+{% block content %}
+    <div class="container-fluid mb-5">
+        <h2 class="text-center text-white bg-success py-5">Detalhes do Carro</h2>
+    </div>
+
+    <div class="container mb-5 mx-2">
+        {% if carro.foto %}
+            <p><img src="{{ carro.foto.url }}" alt="{{ carro.modelo }}" width="400"></p>
+        {% else %}
+            <p>Sem foto disponível</p>
+        {% endif %}
+        <h4 class="container bg-primary-subtle">
+            <p>Modelo: {{ carro.modelo }}</p>
+            <p>Placa: {{ carro.placa }}</p>
+            <p>Ano: {{ carro.ano }}</p>
+            <p>Disponível: {% if carro.disponivel %}Sim{% else %}Não{% endif %}</p>
+        </h4>
+
+        <a class="btn btn-primary" href="{% url 'editar_carro' carro.id %}" role="button">Atualizar</a>
+
+        <!-- Adicione um modal para confirmação da exclusão -->
+        <a class="btn btn-danger" href="{% url 'excluir_carro' carro.id %}">Excluir Carro</a>
+    </div>
+{% endblock %}

@@ -6,27 +6,25 @@ from .views import (
     EditarCarroView, ExcluirCarroView, ListarFuncionariosView,
     DetalhesFuncionarioView, AdicionarFuncionarioView, EditarFuncionarioView,
     ExcluirFuncionarioView, ListarClientesView, DetalhesClienteView,
-    AdicionarClienteView, EditarClienteView, ExcluirClienteView, HomeView
+    AdicionarClienteView, EditarClienteView, ExcluirClienteView,
 )
 
 urlpatterns = [
-    path('', HomeView.as_view(), name='home'),
-
     path('listar_carros/', ListarCarrosView.as_view(), name='listar_carros'),
-    path('carro/<int:carro_id>/', DetalhesCarroView.as_view(), name='detalhes_carro'),
-    path('adicionar_carro/', AdicionarCarroView.as_view(), name='adicionar_carro'),
-    path('editar_carro/<int:carro_id>/', EditarCarroView.as_view(), name='editar_carro'),
-    path('excluir_carro/<int:carro_id>/', ExcluirCarroView.as_view(), name='excluir_carro'),
+    path('carro/<int:pk>/', DetalhesCarroView.as_view(), name='detalhes_carro'),
+    path('carro/adicionar_carro/', AdicionarCarroView.as_view(), name='adicionar_carro'),
+    path('carro/editar_carro/<int:pk>/', EditarCarroView.as_view(), name='editar_carro'),
+    path('carro/excluir_carro/<int:pk>/', ExcluirCarroView.as_view(), name='excluir_carro'),
 
     path('listar_funcionarios/', ListarFuncionariosView.as_view(), name='listar_funcionarios'),
-    path('funcionario/<int:funcionario_id>/', DetalhesFuncionarioView.as_view(), name='detalhes_funcionario'),
+    path('funcionario/<int:pk>/', DetalhesFuncionarioView.as_view(), name='detalhes_funcionario'),
     path('adicionar_funcionario/', AdicionarFuncionarioView.as_view(), name='adicionar_funcionario'),
-    path('editar_funcionario/<int:funcionario_id>/', EditarFuncionarioView.as_view(), name='editar_funcionario'),
-    path('excluir_funcionario/<int:funcionario_id>/', ExcluirFuncionarioView.as_view(), name='excluir_funcionario'),
+    path('editar_funcionario/<int:pk>/', EditarFuncionarioView.as_view(), name='editar_funcionario'),
+    path('excluir_funcionario/<int:pk>/', ExcluirFuncionarioView.as_view(), name='excluir_funcionario'),
 
     path('listar_clientes/', ListarClientesView.as_view(), name='listar_clientes'),
-    path('cliente/<int:cliente_id>/', DetalhesClienteView.as_view(), name='detalhes_cliente'),
+    path('cliente/<int:pk>/', DetalhesClienteView.as_view(), name='detalhes_cliente'),
     path('adicionar_cliente/', AdicionarClienteView.as_view(), name='adicionar_cliente'),
-    path('editar_cliente/<int:cliente_id>/', EditarClienteView.as_view(), name='editar_cliente'),
-    path('excluir_cliente/<int:cliente_id>/', ExcluirClienteView.as_view(), name='excluir_cliente'),
+    path('editar_cliente/<int:pk>/', EditarClienteView.as_view(), name='editar_cliente'),
+    path('excluir_cliente/<int:pk>/', ExcluirClienteView.as_view(), name='excluir_cliente'),
 ]

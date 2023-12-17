@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% load static bootstrap5 %}
+
+{% block title %}Funcionario{% endblock %}
+
+{% block content %}
+    <div class="container-fluid mb-5">
+        <h2 class="text-center text-white bg-success py-5">Funcionario</h2>
+    </div>
+
+    <div class="container mb-5 mx-2">
+        
+        <h4 class="container bg-primary-subtle">
+            <p>Nome: {{ funcionario.nomeFuncionario }}</p>
+            <p>Email: {{ funcionario.emailFuncionario }}</p>
+            <p>CPF: {{ funcionario.cpfFuncionario }}</p>
+            <p>Cargo: {{ funcionario.telefoneFuncionario }}</p>
+            <p>Contato: {{ funcionario.enderecoFuncionario }}</p>
+        </h4>
+
+        <a class="btn btn-primary" href="{% url 'editar_funcionario' funcionario.id %}" role="button">Atualizar</a>
+
+        <!-- Adicione um modal para confirmação da exclusão -->
+        <a class="btn btn-danger" href="{% url 'excluir_funcionario' funcionario.id %}">Excluir Funcionario</a>
+    </div>
+{% endblock %}

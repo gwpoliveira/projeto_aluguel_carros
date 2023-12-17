@@ -1,239 +1,230 @@
 # views.py em aluguel_carros
-
-from django.shortcuts import render, get_object_or_404, redirect
+from django.urls import reverse_lazy
+from typing import Any
+from django.shortcuts import redirect
+from django.urls import reverse
 from django.views import View
+from django.contrib import messages
 from .models import Carro, Funcionario, Cliente, ContratoAluguel
 from .forms import CarroForm, FuncionarioForm, ClienteForm, ContratoAluguelForm
+from django.views.generic import TemplateView, ListView, DetailView, CreateView, UpdateView, DeleteView
 
-class HomeView(View):
-    def get(self, request, *args, **kwargs):
-        return render(request, 'home.html')
-class ListarCarrosView(View):
+class HomeView(TemplateView):
+    template_name = 'home.html'  
+    
+    
+    def get_context_data(self, **kwargs):
+      context = super().get_context_data(**kwargs)
+      context['carros'] = Carro.objects.all()[:10]
+      return context
+
+class ListarCarrosView(ListView):
+    model = Carro
     template_name = 'carro/listar_carros.html'
+    context_object_name = 'carros'
+    ordering = 'modelo'
+    paginate_by = 5
 
-    def get(self, request, *args, **kwargs):
-        carros = Carro.objects.all()
-        return render(request, self.template_name, {'carros': carros})
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        pesquisa = self.request.GET.get('pesquisa')
 
-class DetalhesCarroView(View):
+        # Se o botão de limpar pesquisa foi clicado, ignore o parâmetro de pesquisa
+        if 'limpar_pesquisa' in self.request.GET:
+            pesquisa = ''
+
+        if pesquisa:
+            queryset = queryset.filter(modelo__icontains=pesquisa)  # Corrigido para 'modelo'
+
+        return queryset
+
+class DetalhesCarroView(DetailView):
+    model = Carro
     template_name = 'carro/detalhes_carro.html'
-
-    def get(self, request, carro_id, *args, **kwargs):
-        carro = get_object_or_404(Carro, pk=carro_id)
-        return render(request, self.template_name, {'carro': carro})
-
-class AdicionarCarroView(View):
+    context_object_name = 'carro'
+    # pk_url_kwarg = 'id'
+    
+class AdicionarCarroView(CreateView):
+    model = Carro
     template_name = 'carro/adicionar_carro.html'
+    form_class = CarroForm
+    
+    def get_success_url(self):
+        messages.add_message(self.request, messages.SUCCESS, "Carro cadastrado com sucesso!")
+        return reverse_lazy('listar_carros')
 
-    def get(self, request, *args, **kwargs):
-        form = CarroForm()
-        return render(request, self.template_name, {'form': form})
-
-    def post(self, request, *args, **kwargs):
-        form = CarroForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('listar_carros')
-        return render(request, self.template_name, {'form': form})
-
-class EditarCarroView(View):
+class EditarCarroView(UpdateView):
+    model = Carro
     template_name = 'carro/editar_carro.html'
+    form_class = CarroForm    
+    
+    def get_success_url(self):
+        messages.add_message(self.request, messages.SUCCESS, "Carro atualizado com sucesso!")
+        return reverse('listar_carros')
 
-    def get(self, request, carro_id, *args, **kwargs):
-        carro = get_object_or_404(Carro, pk=carro_id)
-        form = CarroForm(instance=carro)
-        return render(request, self.template_name, {'form': form, 'carro': carro})
-
-    def post(self, request, carro_id, *args, **kwargs):
-        carro = get_object_or_404(Carro, pk=carro_id)
-        form = CarroForm(request.POST, instance=carro)
-        if form.is_valid():
-            form.save()
-            return redirect('listar_carros')
-        return render(request, self.template_name, {'form': form, 'carro': carro})
-
-class ExcluirCarroView(View):
-    template_name = 'carro/excluir_carro.html'
-
-    def get(self, request, carro_id, *args, **kwargs):
-        carro = get_object_or_404(Carro, pk=carro_id)
-        return render(request, self.template_name, {'carro': carro})
-
-    def post(self, request, carro_id, *args, **kwargs):
-        carro = get_object_or_404(Carro, pk=carro_id)
-        carro.delete()
-        return redirect('listar_carros')
+class ExcluirCarroView(DeleteView):
+    model = Carro
+    template_name = 'carro/carro_confirm_delete.html'
+    # pk_url_kwarg = 'id'
+    
+    def get_success_url(self):
+        messages.add_message(self.request, messages.SUCCESS, "Carro deletado com sucesso!")
+        return reverse('listar_carros')
 
 # ___________ Funcionario _________________
 
-class ListarFuncionariosView(View):
+class ListarFuncionariosView(ListView):
+    model = Funcionario
     template_name = 'funcionario/listar_funcionarios.html'
+    context_object_name = 'funcionarios'
+    ordering = 'nomeFuncionario'
+    paginate_by = 20
 
-    def get(self, request, *args, **kwargs):
-        funcionarios = Funcionario.objects.all()
-        return render(request, self.template_name, {'funcionarios': funcionarios})
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        pesquisa = self.request.GET.get('pesquisa')
 
-class DetalhesFuncionarioView(View):
+        # Se o botão de limpar pesquisa foi clicado, ignore o parâmetro de pesquisa
+        if 'limpar_pesquisa' in self.request.GET:
+            pesquisa = ''
+
+        if pesquisa:
+            queryset = queryset.filter(nome__icontains=pesquisa)
+
+        return queryset
+
+class DetalhesFuncionarioView(DetailView):
+    model = Funcionario
     template_name = 'funcionario/detalhes_funcionario.html'
+    context_object_name = 'funcionario'
 
-    def get(self, request, funcionario_id, *args, **kwargs):
-        funcionario = get_object_or_404(Funcionario, pk=funcionario_id)
-        return render(request, self.template_name, {'funcionario': funcionario})
-
-class AdicionarFuncionarioView(View):
+class AdicionarFuncionarioView(CreateView):
+    model = Funcionario
     template_name = 'funcionario/adicionar_funcionario.html'
+    form_class = FuncionarioForm
+    
+    def get_success_url(self):
+        messages.add_message(self.request, messages.SUCCESS, "Funcionário cadastrado com sucesso!")
+        return reverse('listar_funcionarios')
 
-    def get(self, request, *args, **kwargs):
-        form = FuncionarioForm()
-        return render(request, self.template_name, {'form': form})
-
-    def post(self, request, *args, **kwargs):
-        form = FuncionarioForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('listar_funcionarios')
-        return render(request, self.template_name, {'form': form})
-
-class EditarFuncionarioView(View):
+class EditarFuncionarioView(UpdateView):
+    model = Funcionario
     template_name = 'funcionario/editar_funcionario.html'
+    form_class = FuncionarioForm
+    
+    def get_success_url(self):
+        messages.add_message(self.request, messages.SUCCESS, "Funcionário atualizado com sucesso!")
+        return reverse('listar_funcionarios')
 
-    def get(self, request, funcionario_id, *args, **kwargs):
-        funcionario = get_object_or_404(Funcionario, pk=funcionario_id)
-        form = FuncionarioForm(instance=funcionario)
-        return render(request, self.template_name, {'form': form, 'funcionario': funcionario})
-
-    def post(self, request, funcionario_id, *args, **kwargs):
-        funcionario = get_object_or_404(Funcionario, pk=funcionario_id)
-        form = FuncionarioForm(request.POST, instance=funcionario)
-        if form.is_valid():
-            form.save()
-            return redirect('listar_funcionarios')
-        return render(request, self.template_name, {'form': form, 'funcionario': funcionario})
-
-class ExcluirFuncionarioView(View):
-    template_name = 'funcionario/excluir_funcionario.html'
-
-    def get(self, request, funcionario_id, *args, **kwargs):
-        funcionario = get_object_or_404(Funcionario, pk=funcionario_id)
-        return render(request, self.template_name, {'funcionario': funcionario})
-
-    def post(self, request, funcionario_id, *args, **kwargs):
-        funcionario = get_object_or_404(Funcionario, pk=funcionario_id)
-        funcionario.delete()
-        return redirect('listar_funcionarios')
+class ExcluirFuncionarioView(DeleteView):
+    model = Funcionario
+    template_name = 'funcionario/funcionario_confirm_delete.html'
+    
+    def get_success_url(self):
+        messages.add_message(self.request, messages.SUCCESS, "Funcionário deletado com sucesso!")
+        return reverse('listar_funcionarios')
 
 # ___________ Cliente _________________
 
-class ListarClientesView(View):
+class ListarClientesView(ListView):
+    model = Cliente
     template_name = 'cliente/listar_clientes.html'
+    context_object_name = 'clientes'
+    ordering = 'nomeCliente'
+    paginate_by = 5
 
-    def get(self, request, *args, **kwargs):
-        clientes = Cliente.objects.all()
-        return render(request, self.template_name, {'clientes': clientes})
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        pesquisa = self.request.GET.get('pesquisa')
 
-class DetalhesClienteView(View):
+        # Se o botão de limpar pesquisa foi clicado, ignore o parâmetro de pesquisa
+        if 'limpar_pesquisa' in self.request.GET:
+            pesquisa = ''
+
+        if pesquisa:
+            queryset = queryset.filter(nome__icontains=pesquisa)
+
+        return queryset
+
+class DetalhesClienteView(DetailView):
+    model = Cliente
     template_name = 'cliente/detalhes_cliente.html'
+    context_object_name = 'cliente'
 
-    def get(self, request, cliente_id, *args, **kwargs):
-        cliente = get_object_or_404(Cliente, pk=cliente_id)
-        return render(request, self.template_name, {'cliente': cliente})
-
-class AdicionarClienteView(View):
+class AdicionarClienteView(CreateView):
+    model = Cliente
     template_name = 'cliente/adicionar_cliente.html'
+    form_class = ClienteForm
+    
+    def get_success_url(self):
+        messages.add_message(self.request, messages.SUCCESS, "Cliente cadastrado com sucesso!")
+        return reverse('listar_clientes')
 
-    def get(self, request, *args, **kwargs):
-        form = ClienteForm()
-        return render(request, self.template_name, {'form': form})
-
-    def post(self, request, *args, **kwargs):
-        form = ClienteForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('listar_clientes')
-        return render(request, self.template_name, {'form': form})
-
-class EditarClienteView(View):
+class EditarClienteView(UpdateView):
+    model = Cliente
     template_name = 'cliente/editar_cliente.html'
+    form_class = ClienteForm
+    
+    def get_success_url(self):
+        messages.add_message(self.request, messages.SUCCESS, "Cliente atualizado com sucesso!")
+        return reverse('listar_clientes')
 
-    def get(self, request, cliente_id, *args, **kwargs):
-        cliente = get_object_or_404(Cliente, pk=cliente_id)
-        form = ClienteForm(instance=cliente)
-        return render(request, self.template_name, {'form': form, 'cliente': cliente})
-
-    def post(self, request, cliente_id, *args, **kwargs):
-        cliente = get_object_or_404(Cliente, pk=cliente_id)
-        form = ClienteForm(request.POST, instance=cliente)
-        if form.is_valid():
-            form.save()
-            return redirect('listar_clientes')
-        return render(request, self.template_name, {'form': form, 'cliente': cliente})
-
-class ExcluirClienteView(View):
-    template_name = 'cliente/excluir_cliente.html'
-
-    def get(self, request, cliente_id, *args, **kwargs):
-        cliente = get_object_or_404(Cliente, pk=cliente_id)
-        return render(request, self.template_name, {'cliente': cliente})
-
-    def post(self, request, cliente_id, *args, **kwargs):
-        cliente = get_object_or_404(Cliente, pk=cliente_id)
-        cliente.delete()
-        return redirect('listar_clientes')
+class ExcluirClienteView(DeleteView):
+    model = Cliente
+    template_name = 'cliente/cliente_confirm_delete.html'
+    
+    def get_success_url(self):
+        messages.add_message(self.request, messages.SUCCESS, "Cliente deletado com sucesso!")
+        return reverse('listar_clientes')
     
 # ___________ Contrato Aluguel _________________
 
-class ListarContratosAluguelView(View):
-    template_name = 'contrato_aluguel/listar_contratos_aluguel.html'
+class ListarContratosView(ListView):
+    model = ContratoAluguel
+    template_name = 'contrato_aluguel/listar_contratos.html'
+    context_object_name = 'contratos'
+    ordering = 'data_inicio'
 
-    def get(self, request, *args, **kwargs):
-        contratos_aluguel = ContratoAluguel.objects.all()
-        return render(request, self.template_name, {'contratos_aluguel': contratos_aluguel})
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        pesquisa = self.request.GET.get('pesquisa')
 
-class DetalhesContratoAluguelView(View):
-    template_name = 'contrato_aluguel/detalhes_contrato_aluguel.html'
+        # Se o botão de limpar pesquisa foi clicado, ignore o parâmetro de pesquisa
+        if 'limpar_pesquisa' in self.request.GET:
+            pesquisa = ''
 
-    def get(self, request, contrato_id, *args, **kwargs):
-        contrato_aluguel = get_object_or_404(ContratoAluguel, pk=contrato_id)
-        return render(request, self.template_name, {'contrato_aluguel': contrato_aluguel})
+        if pesquisa:
+            queryset = queryset.filter(cliente__nome__icontains=pesquisa)
 
-class AdicionarContratoAluguelView(View):
-    template_name = 'contrato_aluguel/adicionar_contrato_aluguel.html'
+        return queryset
 
-    def get(self, request, *args, **kwargs):
-        form = ContratoAluguelForm()
-        return render(request, self.template_name, {'form': form})
+class DetalhesContratoView(DetailView):
+    model = ContratoAluguel
+    template_name = 'contrato_aluguel/detalhes_contrato.html'
+    context_object_name = 'contrato'
 
-    def post(self, request, *args, **kwargs):
-        form = ContratoAluguelForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('listar_contratos_aluguel')
-        return render(request, self.template_name, {'form': form})
+class AdicionarContratoView(CreateView):
+    model = ContratoAluguel
+    template_name = 'contrato_aluguel/adicionar_contrato.html'
+    form_class = ContratoAluguelForm
+    
+    def get_success_url(self):
+        messages.add_message(self.request, messages.SUCCESS, "Contrato de aluguel cadastrado com sucesso!")
+        return reverse('listar_contratos')
 
-class EditarContratoAluguelView(View):
-    template_name = 'contrato_aluguel/editar_contrato_aluguel.html'
+class EditarContratoView(UpdateView):
+    model = ContratoAluguel
+    template_name = 'contrato_aluguel/editar_contrato.html'
+    form_class = ContratoAluguelForm
+    
+    def get_success_url(self):
+        messages.add_message(self.request, messages.SUCCESS, "Contrato de aluguel atualizado com sucesso!")
+        return reverse('listar_contratos')
 
-    def get(self, request, contrato_id, *args, **kwargs):
-        contrato_aluguel = get_object_or_404(ContratoAluguel, pk=contrato_id)
-        form = ContratoAluguelForm(instance=contrato_aluguel)
-        return render(request, self.template_name, {'form': form, 'contrato_aluguel': contrato_aluguel})
-
-    def post(self, request, contrato_id, *args, **kwargs):
-        contrato_aluguel = get_object_or_404(ContratoAluguel, pk=contrato_id)
-        form = ContratoAluguelForm(request.POST, instance=contrato_aluguel)
-        if form.is_valid():
-            form.save()
-            return redirect('listar_contratos_aluguel')
-        return render(request, self.template_name, {'form': form, 'contrato_aluguel': contrato_aluguel})
-
-class ExcluirContratoAluguelView(View):
-    template_name = 'contrato_aluguel/excluir_contrato_aluguel.html'
-
-    def get(self, request, contrato_id, *args, **kwargs):
-        contrato_aluguel = get_object_or_404(ContratoAluguel, pk=contrato_id)
-        return render(request, self.template_name, {'contrato_aluguel': contrato_aluguel})
-
-    def post(self, request, contrato_id, *args, **kwargs):
-        contrato_aluguel = get_object_or_404(ContratoAluguel, pk=contrato_id)
-        contrato_aluguel.delete()
-        return redirect('listar_contratos_aluguel')
+class ExcluirContratoView(DeleteView):
+    model = ContratoAluguel
+    template_name = 'contrato_aluguel/contrato_confirm_delete.html'
+    
+    def get_success_url(self):
+        messages.add_message(self.request, messages.SUCCESS, "Contrato de aluguel deletado com sucesso!")
+        return reverse('listar_contratos')

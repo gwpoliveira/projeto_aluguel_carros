@@ -1,5 +1,4 @@
-<!-- templates/base.html -->
-
+{% load static %}
 <!DOCTYPE html>
 <html lang="pt-br">
 
@@ -38,16 +37,16 @@
                         <H3>_ _ </H3>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="#">HOME</a>
+                        <a class="nav-link active" aria-current="page" href="{% url 'home' %}">HOME</a>
                     </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle active" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="true">
                           CADASTRO
                         </a>
                         <ul class="dropdown-menu">
-                          <li><a class="dropdown-item" href="#">CLIENTE</a></li>
-                          <li><a class="dropdown-item" href="#">FUNCIONARIO</a></li>
-                          <li><a class="dropdown-item" href="#">CARRO</a></li>
+                          <li><a class="dropdown-item" href="{% url 'listar_clientes'%}">CLIENTE</a></li>
+                          <li><a class="dropdown-item" href="{% url 'listar_funcionarios'%}">FUNCIONARIO</a></li>
+                          <li><a class="dropdown-item" href="{% url 'listar_carros'%}">CARRO</a></li>
                         </ul>
                     </li>
                     <li class="nav-item dropdown">

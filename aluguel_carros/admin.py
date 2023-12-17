@@ -13,7 +13,7 @@ class FuncionarioAdmin(admin.ModelAdmin):
 class ClienteAdmin(admin.ModelAdmin):
     list_display = ('nomeCliente', 'emailCliente', 'cpfCliente', 'telefoneCliente', 'enderecoCliente')
     search_fields = ('nomeCliente', 'emailCliente', 'cpfCliente')
-    list_filter = ('user',)
+    
 
 class ContratoAluguelAdmin(admin.ModelAdmin):
     list_display = ('carro', 'cliente', 'data_inicio', 'data_fim')

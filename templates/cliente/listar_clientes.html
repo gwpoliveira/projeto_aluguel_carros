@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% load static bootstrap5 %}
+
+{% block title %}Listagem de Clientes{% endblock %}
+
+{% block content %}
+{%bootstrap_messages%}
+    <div class="container-fluid mb-5">
+        <h2 class="text-center text-white bg-success py-5">Listagem de Clientes</h2>
+    </div>
+
+    <div class="container-fluid mb-5 mx-2">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">Nome</th>
+                    <th scope="col">E-mail</th>
+                    <th scope="col">CPF</th>
+                    <th scope="col">Contato</th>
+                    <th scope="col">Endeereço</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for cliente in clientes %}
+                    <tr>
+                        <td><a href="{% url 'detalhes_cliente' cliente.id %}">{{ cliente.nomeCliente }}</a></td>
+                        <td><a href="{% url 'detalhes_cliente' cliente.id %}">{{ cliente.emailCliente }}</a></td>
+                        <td><a href="{% url 'detalhes_cliente' cliente.id %}">{{ cliente.cpfCliente }}</a></td>
+                        <td><a href="{% url 'detalhes_cliente' cliente.id %}">{{ cliente.telefoneCliente }}</a></td>
+                        <td><a href="{% url 'detalhes_cliente' cliente.id %}">{{ cliente.enderecoCliente }}</a></td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <div class="container-fluir">
+        {% bootstrap_pagination page_obj %}
+        {% if perms.cliente.add_cliente %}
+        <a class="btn btn-success mx-2" href="{% url 'adicionar_cliente' %}" role="button">Cadastrar Cliente</a>
+    {% endif %}
+    </div>
+    
+{% endblock %}

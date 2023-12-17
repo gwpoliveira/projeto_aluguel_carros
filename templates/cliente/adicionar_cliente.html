@@ -1,0 +1,21 @@
+
+{% extends 'base.html' %}
+{% load static bootstrap5 %}
+
+{% block title %}Adcionar Cliente{% endblock %}
+
+{% block content %}
+
+
+    <div class="container-fluir mb-5">
+        <h2 class=" text-center text-white bg-success py-5">Adicionar Clientes</h2>
+        <div class="container">
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                {% bootstrap_form form %}
+                <button class="btn btn-success" type="submit">Adicionar Cliente</button>
+            </form> 
+        </div>
+    </div>
+    
+{% endblock %}
