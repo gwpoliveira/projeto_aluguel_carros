@@ -6,7 +6,8 @@ from .views import (
     EditarCarroView, ExcluirCarroView, ListarFuncionariosView,
     DetalhesFuncionarioView, AdicionarFuncionarioView, EditarFuncionarioView,
     ExcluirFuncionarioView, ListarClientesView, DetalhesClienteView,
-    AdicionarClienteView, EditarClienteView, ExcluirClienteView,
+    AdicionarClienteView, EditarClienteView, ExcluirClienteView,ListarContratosView, DetalhesContratoView,
+    AdicionarContratoView, EditarContratoView, ExcluirContratoView, DevolverCarroView
 )
 
 urlpatterns = [
@@ -27,4 +28,12 @@ urlpatterns = [
     path('adicionar_cliente/', AdicionarClienteView.as_view(), name='adicionar_cliente'),
     path('editar_cliente/<int:pk>/', EditarClienteView.as_view(), name='editar_cliente'),
     path('excluir_cliente/<int:pk>/', ExcluirClienteView.as_view(), name='excluir_cliente'),
+    
+    path('listar_contratos/', ListarContratosView.as_view(), name='listar_contratos'),
+    path('contrato/<int:pk>/', DetalhesContratoView.as_view(), name='detalhes_contrato'),
+    path('adicionar_contrato/', AdicionarContratoView.as_view(), name='adicionar_contrato'),
+    path('editar_contrato/<int:pk>/', EditarContratoView.as_view(), name='editar_contrato'),
+    path('excluir_contrato/<int:pk>/', ExcluirContratoView.as_view(), name='excluir_contrato'),
+    
+    path('devolver_carro/<int:contrato_id>/', DevolverCarroView.as_view(), name='devolver_carro'),
 ]

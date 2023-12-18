@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% load static bootstrap5 %}
+
+{% block title %}Detalhes do Contrato{% endblock %}
+
+{% block content %}
+    <div class="container-fluid mb-5">
+        <h2 class="text-center text-white bg-success py-5">Detalhes do Contrato</h2>
+    </div>
+
+    <div class="container mb-5 mx-2">
+        
+        <h4 class="container bg-primary-subtle">
+            <p>Carro Alugado: {{ contrato.carro }}</p>
+            <p>Cliente Contratante: {{ contrato.cliente }}</p>
+            <p>Data do Aluguel: {{ contrato.data_inicio}}</p>
+            <p>Data da Devolução Prevista: {{ contrato.data_fim }}</p>
+            <p>Devolvido: {% if contrato.devolvido %}Sim{% else %}Não{% endif %} <p>
+        </h4>
+
+        <a class="btn btn-primary" href="{% url 'editar_contrato' contrato.id %}" role="button">Atualizar</a>
+
+    </div>
+{% endblock %}

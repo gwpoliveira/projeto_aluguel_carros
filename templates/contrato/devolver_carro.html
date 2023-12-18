@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h2>Devolução do Carro</h2>
+
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+
+    <button type="submit">Confirmar Devolução</button>
+  </form>
+
+  <a href="{% url 'listar_contratos' %}">Voltar para a lista de contratos</a>
+{% endblock %}

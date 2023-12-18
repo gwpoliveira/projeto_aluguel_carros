@@ -1,5 +1,5 @@
 from django import forms
-from .models import Carro, Funcionario, Cliente, ContratoAluguel
+from .models import Carro, Funcionario, Cliente, ContratoAluguel, DevolucaoCarro
 
 class CarroForm(forms.ModelForm):
     class Meta:
@@ -20,3 +20,7 @@ class ContratoAluguelForm(forms.ModelForm):
     class Meta:
         model = ContratoAluguel
         fields = ['carro', 'cliente', 'data_inicio', 'data_fim']
+class DevolucaoCarroForm(forms.ModelForm):
+    class Meta:
+        model = DevolucaoCarro
+        fields = ['data_devolucao', 'descricao_avaria']

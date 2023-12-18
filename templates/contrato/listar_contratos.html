@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% load static bootstrap5 %}
+
+{% block title %}Listagem de Contratos{% endblock %}
+
+{% block content %}
+{%bootstrap_messages%}
+    <div class="container-fluid mb-5">
+        <h2 class="text-center text-white bg-success py-5">Listagem de Contratos</h2>
+    </div>
+
+    <div class="container-fluid mb-5 mx-2">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">Carro</th>
+                    <th scope="col">Cliente</th>
+                    <th scope="col">Data Inicio do Aluguel</th>
+                    <th scope="col">Data Prevista da Devolução</th>
+                    <th scope="col">Devolvido</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for contrato in contratos %}
+                    <tr>
+                        <td><a href="{% url 'detalhes_contrato' contrato.id %}">{{ contrato.carro }}</a></td>
+                        <td><a href="{% url 'detalhes_contrato' contrato.id %}">{{ contrato.cliente }}</a></td>
+                        <td><a href="{% url 'detalhes_contrato' contrato.id %}">{{ contrato.data_inicio }}</a></td>
+                        <td><a href="{% url 'detalhes_contrato' contrato.id %}">{{ contrato.data_fim }}</a></td>
+                        <td><a href="{% url 'detalhes_contrato' contrato.id %}">{% if contrato.devolvido %}Sim{% else %}Não{% endif %}</a></td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <div class="container-fluir">
+        {% bootstrap_pagination page_obj %}
+        {% if perms.contrato.add_contrato %}
+        <a class="btn btn-success mx-2" href="{% url 'adicionar_contrato' %}" role="button">Adcionar Contrato</a>
+    {% endif %}
+    </div>
+    
+{% endblock %}
