@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Carro, Funcionario, Cliente, ContratoAluguel
+from .models import Carro, Funcionario, Cliente, ContratoAluguel, DevolucaoCarro
 
 class CarroAdmin(admin.ModelAdmin):
     list_display = ('placa', 'modelo', 'ano', 'disponivel')
@@ -19,7 +19,13 @@ class ContratoAluguelAdmin(admin.ModelAdmin):
     list_display = ('carro', 'cliente', 'data_inicio', 'data_fim')
     search_fields = ('carro__placa', 'cliente__nomeCliente')
     list_filter = ('data_inicio', 'data_fim')
+    
+class DevolucaoCarroAdmin(admin.ModelAdmin):
+    list_display = ('contrato', 'data_devolucao', 'descricao_avaria')
+    search_fields = ('contrato__id',)
+    list_filter = ('data_devolucao',)
 
+admin.site.register(DevolucaoCarro, DevolucaoCarroAdmin)
 admin.site.register(Carro, CarroAdmin)
 admin.site.register(Funcionario, FuncionarioAdmin)
 admin.site.register(Cliente, ClienteAdmin)

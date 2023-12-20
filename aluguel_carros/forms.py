@@ -1,6 +1,7 @@
 from django import forms
 from .models import Carro, Funcionario, Cliente, ContratoAluguel, DevolucaoCarro
 
+
 class CarroForm(forms.ModelForm):
     class Meta:
         model = Carro
@@ -23,4 +24,9 @@ class ContratoAluguelForm(forms.ModelForm):
 class DevolucaoCarroForm(forms.ModelForm):
     class Meta:
         model = DevolucaoCarro
-        fields = ['data_devolucao', 'descricao_avaria']
+        fields = ['contrato', 'data_devolucao', 'descricao_avaria']
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # Adicione opções adicionais ao campo 'contrato' se necessário
+

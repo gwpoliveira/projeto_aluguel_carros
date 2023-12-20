@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% load static bootstrap5 %}
+
+{% block title %}Tela de Login{% endblock %}
+
+{% block content %}
+<h2 class=" text-center text-white bg-success py-5">Login</h2>
+<div class="conatiner mx-5">
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {% bootstrap_form form %}
+        <button class="btn btn-success" type="submit">Logar</button>
+    </form>
+</div>
+{% endblock %}

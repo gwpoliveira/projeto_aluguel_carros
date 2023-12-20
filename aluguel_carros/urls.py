@@ -7,7 +7,7 @@ from .views import (
     DetalhesFuncionarioView, AdicionarFuncionarioView, EditarFuncionarioView,
     ExcluirFuncionarioView, ListarClientesView, DetalhesClienteView,
     AdicionarClienteView, EditarClienteView, ExcluirClienteView,ListarContratosView, DetalhesContratoView,
-    AdicionarContratoView, EditarContratoView, ExcluirContratoView, DevolverCarroView
+    AdicionarContratoView, EditarContratoView, ExcluirContratoView, DevolucaoCarroView
 )
 
 urlpatterns = [
@@ -35,5 +35,5 @@ urlpatterns = [
     path('editar_contrato/<int:pk>/', EditarContratoView.as_view(), name='editar_contrato'),
     path('excluir_contrato/<int:pk>/', ExcluirContratoView.as_view(), name='excluir_contrato'),
     
-    path('devolver_carro/<int:contrato_id>/', DevolverCarroView.as_view(), name='devolver_carro'),
+    path('devolver_carro/<int:contrato_id>/', DevolucaoCarroView.as_view(), name='devolver_carro'),
 ]
