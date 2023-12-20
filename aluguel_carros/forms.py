@@ -29,4 +29,6 @@ class DevolucaoCarroForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         # Adicione opções adicionais ao campo 'contrato' se necessário
+class DevolucaoForm(forms.Form):
+    descricao_avaria = forms.CharField(widget=forms.Textarea(attrs={'rows': 3}), required=False)
 

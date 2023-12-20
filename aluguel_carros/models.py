@@ -44,7 +44,7 @@ class ContratoAluguel(models.Model):
     data_inicio = models.DateField()
     data_fim = models.DateField()
     devolvido = models.BooleanField(default=False)
-    
+
     def __str__(self):
        return f"{self.id} - {self.carro.modelo} - {self.cliente.nomeCliente} - {self.data_inicio} - {self.data_fim}"
 

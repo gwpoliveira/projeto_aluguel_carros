@@ -7,6 +7,8 @@ from django.views import View
 from django.contrib import messages
 from django.contrib.auth import logout
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views.generic.edit import FormView
+from .forms import DevolucaoForm
 from .models import Carro, Funcionario, Cliente, ContratoAluguel
 from .forms import CarroForm, FuncionarioForm, ClienteForm, ContratoAluguelForm, DevolucaoCarroForm
 from django.views.generic import TemplateView, ListView, DetailView, CreateView, UpdateView, DeleteView
@@ -206,10 +208,22 @@ class ListarContratosView(LoginRequiredMixin,ListView):
 
         return queryset
 
-class DetalhesContratoView(LoginRequiredMixin,DetailView):
+# class DetalhesContratoView(LoginRequiredMixin,DetailView):
+#     model = ContratoAluguel
+#     template_name = 'contrato/detalhes_contrato.html'
+#     context_object_name = 'contrato'
+
+class DetalhesContratoView(LoginRequiredMixin, DetailView):
     model = ContratoAluguel
     template_name = 'contrato/detalhes_contrato.html'
     context_object_name = 'contrato'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        contrato = self.get_object()
+        context['contrato'] = contrato
+        return context
+
 
 
 class AdicionarContratoView(LoginRequiredMixin,CreateView):
@@ -258,32 +272,24 @@ class ExcluirContratoView(LoginRequiredMixin,DeleteView):
         messages.add_message(self.request, messages.SUCCESS, "Contrato de aluguel deletado com sucesso!")
         return reverse('listar_contratos')
 
-class DevolucaoCarroView(View):
-    template_name = 'devolucao_carro.html'
+class DevolverContratoView(DetailView):
+    model = ContratoAluguel
+    template_name = 'contrato/devolver_contrato.html'  # substitua pelo seu template
 
-    def get(self, request, contrato_id):
-        contrato = get_object_or_404(ContratoAluguel, id=contrato_id)
-        form = DevolucaoCarroForm(initial={'contrato': contrato})
+    def get(self, request, *args, **kwargs):
+        contrato = self.get_object()
 
-        return render(request, self.template_name, {'form': form, 'contrato': contrato})
+        if contrato.devolvido:
+            messages.add_message(request, messages.WARNING, "Este contrato já foi devolvido.")
+            return redirect('listar_contratos')
 
-    def post(self, request, contrato_id):
-        contrato = get_object_or_404(ContratoAluguel, id=contrato_id)
-        form = DevolucaoCarroForm(request.POST)
+        # Atualize o status do contrato para devolvido
+        contrato.devolvido = True
+        contrato.save()
 
-        if form.is_valid():
-            devolucao = form.save(commit=False)
-            devolucao.contrato = contrato
-            devolucao.save()
+        # Atualize o status do carro para disponível
+        contrato.carro.disponivel = True
+        contrato.carro.save()
 
-            # Atualize o status do carro para disponível
-            contrato.carro.disponivel = True
-            contrato.carro.save()
-
-            # Marque o contrato como devolvido
-            contrato.devolvido = True
-            contrato.save()
-
-            return redirect('listar_contratos')  # Redirecione para a lista de contratos ou ajuste conforme necessário
-
-        return render(request, self.template_name, {'form': form, 'contrato': contrato})
+        messages.add_message(request, messages.SUCCESS, "Contrato de aluguel devolvido com sucesso!")
+        return redirect('listar_contratos')
