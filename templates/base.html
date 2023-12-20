@@ -5,8 +5,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="shortcut icon" href="{% static '/static/ico/favicon.ico' %}" type="image/x-icon">
-    <link rel="icon" href="{% static '/static/ico/favicon.ico' %}" type="image/x-icon">
+    <link rel="shortcut icon" href="{% static 'ico/favicon.ico' %}" type="image/x-icon">
+    <link rel="icon" href="{% static 'ico/favicon.ico' %}" type="image/x-icon">
     <title>{% block title %}Título Padrão{% endblock %}</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
@@ -19,37 +19,37 @@
                 aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <a class="navbar-brand" href="#">Accelerete Rent</a>
+            <a class="navbar-brand text-success" href="#"><h4>Accelerete Rent</h4></a>
             
             <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a href="/"><img src="{% static '/static/img/cubo.png'%}" alt="Logo" width="40" height="40"
+                        <a href="/"><img src="{% static 'img/cubo.png'%}" alt="Logo" width="140"
                         class="d-inline-block align-text-center me-4 ms-4"></a>
                     </li>
 
                  
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="{% url 'home' %}">HOME</a>
+                        <a class="nav-link active text-success mx-4" aria-current="page" href="{% url 'home' %}"><h7>HOME</h7></a>
                     </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle active" href="#" role="button" data-bs-toggle="dropdown"
+                    <li class="nav-item dropdown mx-4">
+                        <a class="nav-link dropdown-toggle active text-success" href="#" role="button" data-bs-toggle="dropdown"
                             aria-expanded="true">
-                            CADASTRO
+                            <h7>CADASTRO</h7>
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="{% url 'listar_clientes'%}">CLIENTE</a></li>
-                            <li><a class="dropdown-item" href="{% url 'listar_funcionarios'%}">FUNCIONARIO</a></li>
-                            <li><a class="dropdown-item" href="{% url 'listar_carros'%}">CARRO</a></li>
+                            <li><a class="dropdown-item text-success" href="{% url 'listar_clientes'%}"><h8>CLIENTE</h8></a></li>
+                            <li><a class="dropdown-item text-success" href="{% url 'listar_funcionarios'%}"><h8>FUNCIONARIO</h8></a></li>
+                            <li><a class="dropdown-item text-success" href="{% url 'listar_carros'%}"><h8>CARRO</h8></a></li>
                         </ul>
                     </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle active" href="#" role="button" data-bs-toggle="dropdown"
+                    <li class="nav-item dropdown mx-4">
+                        <a class="nav-link dropdown-toggle active text-success" href="#" role="button" data-bs-toggle="dropdown"
                             aria-expanded="true">
-                            MOVIMENTACAO
+                            <h7>MOVIMENTACAO</h7>
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="{% url 'listar_contratos' %}">ALUGUEL</a></li>
+                            <li><a class="dropdown-item text-success" href="{% url 'listar_contratos' %}"><h8>ALUGUEL</h8></a></li>
                             
                         </ul>
                     </li>
@@ -69,11 +69,11 @@
     </main>
     <div class="container bg-body-tertiary">
         <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
-          <p class="col-md-4 mb-0 text-body-secondary">© 2023 Faculdade de Tenologia do Piaui</p>
+          <p class="col-md-4 mb-0 text-body-secondary">© 2023 Somos Todos Nerds</p>
     
           <a href="/"
             class="col-md-4 d-flex align-items-center justify-content-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
-            <img src="{% static '/static/img/stdn.png'%}" alt="Logo" width="40" height="40"
+            <img src="{% static 'img/stdn.png'%}" alt="Logo" width="100"
               class="d-inline-block align-text-center me-4 ms-4">
           </a>
     
