@@ -16,7 +16,7 @@ class CustomLogoutView(View):
         logout(request)
         return redirect('home')  # Substitua 'home' pelo nome da sua URL de página inicial
     
-class HomeView(LoginRequiredMixin, TemplateView):
+class HomeView(TemplateView):
     template_name = 'home.html'  
     
     
@@ -51,7 +51,7 @@ class DetalhesCarroView(DetailView):
     context_object_name = 'carro'
     # pk_url_kwarg = 'id'
     
-class AdicionarCarroView(CreateView):
+class AdicionarCarroView(LoginRequiredMixin,CreateView):
     model = Carro
     template_name = 'carro/adicionar_carro.html'
     form_class = CarroForm
@@ -60,7 +60,7 @@ class AdicionarCarroView(CreateView):
         messages.add_message(self.request, messages.SUCCESS, "Carro cadastrado com sucesso!")
         return reverse_lazy('listar_carros')
 
-class EditarCarroView(UpdateView):
+class EditarCarroView(LoginRequiredMixin,UpdateView):
     model = Carro
     template_name = 'carro/editar_carro.html'
     form_class = CarroForm    
@@ -69,7 +69,7 @@ class EditarCarroView(UpdateView):
         messages.add_message(self.request, messages.SUCCESS, "Carro atualizado com sucesso!")
         return reverse('listar_carros')
 
-class ExcluirCarroView(DeleteView):
+class ExcluirCarroView(LoginRequiredMixin,DeleteView):
     model = Carro
     template_name = 'carro/carro_confirm_delete.html'
     # pk_url_kwarg = 'id'
@@ -105,7 +105,7 @@ class DetalhesFuncionarioView(DetailView):
     template_name = 'funcionario/detalhes_funcionario.html'
     context_object_name = 'funcionario'
 
-class AdicionarFuncionarioView(CreateView):
+class AdicionarFuncionarioView(LoginRequiredMixin,CreateView):
     model = Funcionario
     template_name = 'funcionario/adicionar_funcionario.html'
     form_class = FuncionarioForm
@@ -114,7 +114,7 @@ class AdicionarFuncionarioView(CreateView):
         messages.add_message(self.request, messages.SUCCESS, "Funcionário cadastrado com sucesso!")
         return reverse('listar_funcionarios')
 
-class EditarFuncionarioView(UpdateView):
+class EditarFuncionarioView(LoginRequiredMixin,UpdateView):
     model = Funcionario
     template_name = 'funcionario/editar_funcionario.html'
     form_class = FuncionarioForm
@@ -123,7 +123,7 @@ class EditarFuncionarioView(UpdateView):
         messages.add_message(self.request, messages.SUCCESS, "Funcionário atualizado com sucesso!")
         return reverse('listar_funcionarios')
 
-class ExcluirFuncionarioView(DeleteView):
+class ExcluirFuncionarioView(LoginRequiredMixin,DeleteView):
     model = Funcionario
     template_name = 'funcionario/funcionario_confirm_delete.html'
     
@@ -158,7 +158,7 @@ class DetalhesClienteView(DetailView):
     template_name = 'cliente/detalhes_cliente.html'
     context_object_name = 'cliente'
 
-class AdicionarClienteView(CreateView):
+class AdicionarClienteView(LoginRequiredMixin,CreateView):
     model = Cliente
     template_name = 'cliente/adicionar_cliente.html'
     form_class = ClienteForm
@@ -167,7 +167,7 @@ class AdicionarClienteView(CreateView):
         messages.add_message(self.request, messages.SUCCESS, "Cliente cadastrado com sucesso!")
         return reverse('listar_clientes')
 
-class EditarClienteView(UpdateView):
+class EditarClienteView(LoginRequiredMixin,UpdateView):
     model = Cliente
     template_name = 'cliente/editar_cliente.html'
     form_class = ClienteForm
@@ -176,7 +176,7 @@ class EditarClienteView(UpdateView):
         messages.add_message(self.request, messages.SUCCESS, "Cliente atualizado com sucesso!")
         return reverse('listar_clientes')
 
-class ExcluirClienteView(DeleteView):
+class ExcluirClienteView(LoginRequiredMixin,DeleteView):
     model = Cliente
     template_name = 'cliente/cliente_confirm_delete.html'
     
@@ -186,7 +186,7 @@ class ExcluirClienteView(DeleteView):
     
 # ___________ Contrato Aluguel _________________
 
-class ListarContratosView(ListView):
+class ListarContratosView(LoginRequiredMixin,ListView):
     model = ContratoAluguel
     template_name = 'contrato/listar_contratos.html'
     context_object_name = 'contratos'
@@ -206,13 +206,13 @@ class ListarContratosView(ListView):
 
         return queryset
 
-class DetalhesContratoView(DetailView):
+class DetalhesContratoView(LoginRequiredMixin,DetailView):
     model = ContratoAluguel
     template_name = 'contrato/detalhes_contrato.html'
     context_object_name = 'contrato'
 
 
-class AdicionarContratoView(CreateView):
+class AdicionarContratoView(LoginRequiredMixin,CreateView):
     model = ContratoAluguel
     template_name = 'contrato/adicionar_contrato.html'
     form_class = ContratoAluguelForm
@@ -241,7 +241,7 @@ class AdicionarContratoView(CreateView):
         messages.add_message(self.request, messages.ERROR, "O carro selecionado não está disponível.")
         return redirect('listar_carros')  # Redirecione para a lista de carros ou ajuste conforme necessário
 
-class EditarContratoView(UpdateView):
+class EditarContratoView(LoginRequiredMixin,UpdateView):
     model = ContratoAluguel
     template_name = 'contrato/editar_contrato.html'
     form_class = ContratoAluguelForm
@@ -250,7 +250,7 @@ class EditarContratoView(UpdateView):
         messages.add_message(self.request, messages.SUCCESS, "Contrato de aluguel atualizado com sucesso!")
         return reverse('listar_contratos')
 
-class ExcluirContratoView(DeleteView):
+class ExcluirContratoView(LoginRequiredMixin,DeleteView):
     model = ContratoAluguel
     template_name = 'contrato/contrato_confirm_delete.html'
     
